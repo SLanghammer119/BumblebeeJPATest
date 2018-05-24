@@ -7,10 +7,12 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,20 +23,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "subcategories")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Subcategories.findAll", query = "SELECT s FROM Subcategories s")
-    , @NamedQuery(name = "Subcategories.findBySubcatid", query = "SELECT s FROM Subcategories s WHERE s.subcatid = :subcatid")
-    , @NamedQuery(name = "Subcategories.findBySubcatname", query = "SELECT s FROM Subcategories s WHERE s.subcatname = :subcatname")})
-public class Subcategories implements Serializable {
+    @NamedQuery(name = "Subcategory.findAll", query = "SELECT s FROM Subcategory s")
+    , @NamedQuery(name = "Subcategory.findBySubcatid", query = "SELECT s FROM Subcategory s WHERE s.subcatid = :subcatid")
+    , @NamedQuery(name = "Subcategory.findBySubcatname", query = "SELECT s FROM Subcategory s WHERE s.subcatname = :subcatname")})
+public class Subcategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,20 +46,24 @@ public class Subcategories implements Serializable {
     @Basic(optional = false)
     @Column(name = "subcatname")
     private String subcatname;
-    @JoinColumn(name = "primecategories_primeid", referencedColumnName = "primeid")
-    @ManyToOne(optional = false)
-    private Primecategories primecategoriesPrimeid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "subcategoriesSubid")
-    private Collection<Article> articlesCollection;
+    
+    
+    @ManyToOne(targetEntity=Primecategory.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "primecategory_primeid", referencedColumnName = "primeid")
+    private Primecategory primecategory;
+    
+    
+    @OneToMany(targetEntity=Subcategory.class, mappedBy="subcategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Article> articles;
 
-    public Subcategories() {
+    public Subcategory() {
     }
 
-    public Subcategories(Integer subcatid) {
+    public Subcategory(Integer subcatid) {
         this.subcatid = subcatid;
     }
 
-    public Subcategories(Integer subcatid, String subcatname) {
+    public Subcategory(Integer subcatid, String subcatname) {
         this.subcatid = subcatid;
         this.subcatname = subcatname;
     }
@@ -79,21 +84,24 @@ public class Subcategories implements Serializable {
         this.subcatname = subcatname;
     }
 
-    public Primecategories getPrimecategoriesPrimeid() {
-        return primecategoriesPrimeid;
+    public Primecategory getPrimecategory() {
+        return primecategory;
     }
 
-    public void setPrimecategoriesPrimeid(Primecategories primecategoriesPrimeid) {
-        this.primecategoriesPrimeid = primecategoriesPrimeid;
+    public void setPrimecategory(Primecategory primecategory) {
+        this.primecategory = primecategory;
     }
 
-    @XmlTransient
-    public Collection<Article> getArticlesCollection() {
-        return articlesCollection;
+    public List<Article> getArticles() {
+        return articles;
     }
 
-    public void setArticlesCollection(Collection<Article> articlesCollection) {
-        this.articlesCollection = articlesCollection;
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
     }
+
+    
+
+  
     
 }

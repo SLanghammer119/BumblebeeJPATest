@@ -7,10 +7,12 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,16 +25,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "primecategories")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Primecategories.findAll", query = "SELECT p FROM Primecategories p")
-    , @NamedQuery(name = "Primecategories.findByPrimeid", query = "SELECT p FROM Primecategories p WHERE p.primeid = :primeid")
-    , @NamedQuery(name = "Primecategories.findByPrimename", query = "SELECT p FROM Primecategories p WHERE p.primename = :primename")})
-public class Primecategories implements Serializable {
+    @NamedQuery(name = "Primecategory.findAll", query = "SELECT p FROM Primecategory p")
+    , @NamedQuery(name = "Primecategory.findByPrimeid", query = "SELECT p FROM Primecategory p WHERE p.primeid = :primeid")
+    , @NamedQuery(name = "Primecategoriy.findByPrimename", query = "SELECT p FROM Primecategory p WHERE p.primename = :primename")})
+public class Primecategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,17 +45,19 @@ public class Primecategories implements Serializable {
     @Basic(optional = false)
     @Column(name = "primename")
     private String primename;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "primecategoriesPrimeid")
-    private Collection<Subcategories> subcategoriesCollection;
+    
+    
+    @OneToMany(targetEntity=Primecategory.class, mappedBy = "primecategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Subcategory> subcategories;
 
-    public Primecategories() {
+    public Primecategory() {
     }
 
-    public Primecategories(Integer primeid) {
+    public Primecategory(Integer primeid) {
         this.primeid = primeid;
     }
 
-    public Primecategories(Integer primeid, String primename) {
+    public Primecategory(Integer primeid, String primename) {
         this.primeid = primeid;
         this.primename = primename;
     }
@@ -74,13 +78,14 @@ public class Primecategories implements Serializable {
         this.primename = primename;
     }
 
-    @XmlTransient
-    public Collection<Subcategories> getSubcategoriesCollection() {
-        return subcategoriesCollection;
+    public List<Subcategory> getSubcategories() {
+        return subcategories;
     }
 
-    public void setSubcategoriesCollection(Collection<Subcategories> subcategoriesCollection) {
-        this.subcategoriesCollection = subcategoriesCollection;
+    public void setSubcategories(List<Subcategory> subcategories) {
+        this.subcategories = subcategories;
     }
+    
+    
     
 }

@@ -8,8 +8,10 @@ package com.bumblebee.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "shoppingitems")
@@ -45,13 +47,12 @@ public class Shoppingitems implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "totalLine")
     private BigDecimal totalLine;
-    @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
-    @ManyToOne(optional = false)
-    private Article articlesArtid;
-    @JoinColumn(name = "shoppingcarts_shopid", referencedColumnName = "shopid")
-    @ManyToOne(optional = false)
-    private Shoppingcart shoppingcartsShopid;
-
+    
+    @ManyToOne(targetEntity=Article.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="articles_artid", referencedColumnName = "artid")
+    private Article article;
+    
+    
     public Shoppingitems() {
     }
 
@@ -83,21 +84,6 @@ public class Shoppingitems implements Serializable {
         this.totalLine = totalLine;
     }
 
-    public Article getArticlesArtid() {
-        return articlesArtid;
-    }
-
-    public void setArticlesArtid(Article articlesArtid) {
-        this.articlesArtid = articlesArtid;
-    }
-
-    public Shoppingcart getShoppingcartsShopid() {
-        return shoppingcartsShopid;
-    }
-
-    public void setShoppingcartsShopid(Shoppingcart shoppingcartsShopid) {
-        this.shoppingcartsShopid = shoppingcartsShopid;
-    }
 
     
 }

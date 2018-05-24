@@ -7,10 +7,12 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,15 +25,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "units")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Units.findAll", query = "SELECT u FROM Units u")
-    , @NamedQuery(name = "Units.findByUnitid", query = "SELECT u FROM Units u WHERE u.unitid = :unitid")
-    , @NamedQuery(name = "Units.findByUnit", query = "SELECT u FROM Units u WHERE u.unit = :unit")})
+    @NamedQuery(name = "Unit.findAll", query = "SELECT u FROM Unit u")
+    , @NamedQuery(name = "Unit.findByUnitid", query = "SELECT u FROM Unit u WHERE u.unitid = :unitid")
+    , @NamedQuery(name = "Unit.findByUnit", query = "SELECT u FROM Unit u WHERE u.unit = :unit")})
 public class Unit implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,8 +44,10 @@ public class Unit implements Serializable {
     private Integer unitid;
     @Column(name = "unit")
     private String unit;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "unitsUnitid")
-    private Collection<Articlesizes> articlesizesCollection;
+    
+    
+    @OneToMany(targetEntity=Articlesizes.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "unit")
+    private List<Articlesizes> articlesizes;
 
     public Unit() {
     }
@@ -68,13 +72,14 @@ public class Unit implements Serializable {
         this.unit = unit;
     }
 
-    @XmlTransient
-    public Collection<Articlesizes> getArticlesizesCollection() {
-        return articlesizesCollection;
+    public List<Articlesizes> getArticlesizes() {
+        return articlesizes;
     }
 
-    public void setArticlesizesCollection(Collection<Articlesizes> articlesizesCollection) {
-        this.articlesizesCollection = articlesizesCollection;
+    public void setArticlesizes(List<Articlesizes> articlesizes) {
+        this.articlesizes = articlesizes;
     }
+
+   
     
 }

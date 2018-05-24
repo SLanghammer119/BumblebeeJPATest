@@ -102,9 +102,8 @@ public class Customer implements Serializable {
     private Creditcard creditcard;
     
     
-    
-//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
-//    private Shoppingcart shoppingcart;
+    @OneToOne(targetEntity=Shoppingcart.class, mappedBy="customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Shoppingcart shoppingcart;
     
 //    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
 //    private Creditcard creditcard;
