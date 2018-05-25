@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "articlesizes")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Articlesize.findAll", query = "SELECT a FROM Articlesize a")
-    , @NamedQuery(name = "Articlesize.findByArtsizid", query = "SELECT a FROM Articlesize a WHERE a.artsizid = :artsizid")})
+    @NamedQuery(name = "Articlesizes.findAll", query = "SELECT a FROM Articlesizes a")
+    , @NamedQuery(name = "Articlesizes.findByArtsizid", query = "SELECT a FROM Articlesizes a WHERE a.artsizid = :artsizid")})
 public class Articlesizes implements Serializable {
 
     private static final long serialVersionUID = 1L;

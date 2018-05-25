@@ -6,7 +6,6 @@
 package com.bumblebee.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -50,9 +49,9 @@ public class Shoppingcart implements Serializable {
     private int shopcardno;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "total")
-    private BigDecimal total;
+    private Double total;
     @Column(name = "shipping")
-    private BigDecimal shipping;
+    private Double shipping;
     
     @OneToOne(targetEntity=Customer.class, cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "customers_custid", referencedColumnName = "custid")
@@ -91,21 +90,39 @@ public class Shoppingcart implements Serializable {
         this.shopcardno = shopcardno;
     }
 
-    public BigDecimal getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
-    public BigDecimal getShipping() {
+    public Double getShipping() {
         return shipping;
     }
 
-    public void setShipping(BigDecimal shipping) {
+    public void setShipping(Double shipping) {
         this.shipping = shipping;
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public List<Shoppingitems> getShoppingitems() {
+        return shoppingitems;
+    }
+
+    public void setShoppingitems(List<Shoppingitems> shoppingitems) {
+        this.shoppingitems = shoppingitems;
+    }
+    
+    
 
    
 

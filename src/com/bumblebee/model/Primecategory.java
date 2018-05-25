@@ -47,7 +47,7 @@ public class Primecategory implements Serializable {
     private String primename;
     
     
-    @OneToMany(targetEntity=Primecategory.class, mappedBy = "primecategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity=Subcategory.class, mappedBy = "primecategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Subcategory> subcategories;
 
     public Primecategory() {

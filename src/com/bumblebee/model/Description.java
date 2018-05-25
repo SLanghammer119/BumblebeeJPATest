@@ -7,10 +7,12 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,20 +21,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "descriptions")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Descriptions.findAll", query = "SELECT d FROM Descriptions d")
-    , @NamedQuery(name = "Descriptions.findByDesid", query = "SELECT d FROM Descriptions d WHERE d.desid = :desid")
-    , @NamedQuery(name = "Descriptions.findByFeature", query = "SELECT d FROM Descriptions d WHERE d.feature = :feature")})
-public class Descriptions implements Serializable {
+    @NamedQuery(name = "Description.findAll", query = "SELECT d FROM Description d")
+    , @NamedQuery(name = "Description.findByDesid", query = "SELECT d FROM Description d WHERE d.desid = :desid")
+    , @NamedQuery(name = "Description.findByFeature", query = "SELECT d FROM Description d WHERE d.feature = :feature")})
+public class Description implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,13 +43,15 @@ public class Descriptions implements Serializable {
     private Integer desid;
     @Column(name = "feature")
     private String feature;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "descriptionsDesid")
-    private Collection<Articledescriptions> articledescriptionsCollection;
+    
+    
+    @OneToMany(targetEntity=Articledescriptions.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "description")
+    private List<Articledescriptions> articledescriptions;
 
-    public Descriptions() {
+    public Description() {
     }
 
-    public Descriptions(Integer desid) {
+    public Description(Integer desid) {
         this.desid = desid;
     }
 
@@ -68,13 +71,14 @@ public class Descriptions implements Serializable {
         this.feature = feature;
     }
 
-    @XmlTransient
-    public Collection<Articledescriptions> getArticledescriptionsCollection() {
-        return articledescriptionsCollection;
+    public List<Articledescriptions> getArticledescriptions() {
+        return articledescriptions;
     }
 
-    public void setArticledescriptionsCollection(Collection<Articledescriptions> articledescriptionsCollection) {
-        this.articledescriptionsCollection = articledescriptionsCollection;
+    public void setArticledescriptions(List<Articledescriptions> articledescriptions) {
+        this.articledescriptions = articledescriptions;
     }
+
+   
     
 }

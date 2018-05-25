@@ -7,10 +7,12 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,16 +26,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "colors")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Colors.findAll", query = "SELECT c FROM Colors c")
-    , @NamedQuery(name = "Colors.findByColid", query = "SELECT c FROM Colors c WHERE c.colid = :colid")
-    , @NamedQuery(name = "Colors.findByColor", query = "SELECT c FROM Colors c WHERE c.color = :color")})
-public class Colors implements Serializable {
+    @NamedQuery(name = "Color.findAll", query = "SELECT c FROM Color c")
+    , @NamedQuery(name = "Color.findByColid", query = "SELECT c FROM Color c WHERE c.colid = :colid")
+    , @NamedQuery(name = "Color.findByColor", query = "SELECT c FROM Color c WHERE c.color = :color")})
+public class Color implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,13 +48,15 @@ public class Colors implements Serializable {
     @Lob
     @Column(name = "colorphoto")
     private byte[] colorphoto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "colorsColid")
-    private Collection<Articlecolors> articlecolorsCollection;
+    
+    
+    @OneToMany(targetEntity=Articlecolors.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "color")
+    private List<Articlecolors> articlecolors;
 
-    public Colors() {
+    public Color() {
     }
 
-    public Colors(Integer colid) {
+    public Color(Integer colid) {
         this.colid = colid;
     }
 
@@ -80,13 +84,14 @@ public class Colors implements Serializable {
         this.colorphoto = colorphoto;
     }
 
-    @XmlTransient
-    public Collection<Articlecolors> getArticlecolorsCollection() {
-        return articlecolorsCollection;
+    public List<Articlecolors> getArticlecolors() {
+        return articlecolors;
     }
 
-    public void setArticlecolorsCollection(Collection<Articlecolors> articlecolorsCollection) {
-        this.articlecolorsCollection = articlecolorsCollection;
+    public void setArticlecolors(List<Articlecolors> articlecolors) {
+        this.articlecolors = articlecolors;
     }
+
+ 
     
 }

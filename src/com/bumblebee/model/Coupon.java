@@ -9,10 +9,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,19 +29,19 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "coupons")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Coupons.findAll", query = "SELECT c FROM Coupons c")
-    , @NamedQuery(name = "Coupons.findByCoupid", query = "SELECT c FROM Coupons c WHERE c.coupid = :coupid")
-    , @NamedQuery(name = "Coupons.findByCouponno", query = "SELECT c FROM Coupons c WHERE c.couponno = :couponno")
-    , @NamedQuery(name = "Coupons.findByOrigvalue", query = "SELECT c FROM Coupons c WHERE c.origvalue = :origvalue")
-    , @NamedQuery(name = "Coupons.findByCurvalue", query = "SELECT c FROM Coupons c WHERE c.curvalue = :curvalue")
-    , @NamedQuery(name = "Coupons.findByCoupondate", query = "SELECT c FROM Coupons c WHERE c.coupondate = :coupondate")})
-public class Coupons implements Serializable {
+    @NamedQuery(name = "Coupon.findAll", query = "SELECT c FROM Coupon c")
+    , @NamedQuery(name = "Coupon.findByCoupid", query = "SELECT c FROM Coupon c WHERE c.coupid = :coupid")
+    , @NamedQuery(name = "Coupon.findByCouponno", query = "SELECT c FROM Coupon c WHERE c.couponno = :couponno")
+    , @NamedQuery(name = "Coupon.findByOrigvalue", query = "SELECT c FROM Coupon c WHERE c.origvalue = :origvalue")
+    , @NamedQuery(name = "Coupon.findByCurvalue", query = "SELECT c FROM Coupon c WHERE c.curvalue = :curvalue")
+    , @NamedQuery(name = "Coupon.findByCoupondate", query = "SELECT c FROM Coupon c WHERE c.coupondate = :coupondate")})
+public class Coupon implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,13 +59,15 @@ public class Coupons implements Serializable {
     @Column(name = "coupondate")
     @Temporal(TemporalType.DATE)
     private Date coupondate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "couponsCoupid")
-    private Collection<Orders> ordersCollection;
+    
+    
+    @OneToMany(targetEntity=Order.class, cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "coupon")
+    private List<Order> orders;
 
-    public Coupons() {
+    public Coupon() {
     }
 
-    public Coupons(Integer coupid) {
+    public Coupon(Integer coupid) {
         this.coupid = coupid;
     }
 
@@ -107,13 +111,14 @@ public class Coupons implements Serializable {
         this.coupondate = coupondate;
     }
 
-    @XmlTransient
-    public Collection<Orders> getOrdersCollection() {
-        return ordersCollection;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setOrdersCollection(Collection<Orders> ordersCollection) {
-        this.ordersCollection = ordersCollection;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
+
+  
     
 }

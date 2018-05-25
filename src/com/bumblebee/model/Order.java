@@ -9,10 +9,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,20 +32,20 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "orders")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o")
-    , @NamedQuery(name = "Orders.findByOrderid", query = "SELECT o FROM Orders o WHERE o.orderid = :orderid")
-    , @NamedQuery(name = "Orders.findByOrderno", query = "SELECT o FROM Orders o WHERE o.orderno = :orderno")
-    , @NamedQuery(name = "Orders.findByTotal", query = "SELECT o FROM Orders o WHERE o.total = :total")
-    , @NamedQuery(name = "Orders.findByShipping", query = "SELECT o FROM Orders o WHERE o.shipping = :shipping")
-    , @NamedQuery(name = "Orders.findByOrderdate", query = "SELECT o FROM Orders o WHERE o.orderdate = :orderdate")
-    , @NamedQuery(name = "Orders.findByCoupondiscount", query = "SELECT o FROM Orders o WHERE o.coupondiscount = :coupondiscount")})
-public class Orders implements Serializable {
+    @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o")
+    , @NamedQuery(name = "Order.findByOrderid", query = "SELECT o FROM Order o WHERE o.orderid = :orderid")
+    , @NamedQuery(name = "Order.findByOrderno", query = "SELECT o FROM Order o WHERE o.orderno = :orderno")
+    , @NamedQuery(name = "Order.findByTotal", query = "SELECT o FROM Order o WHERE o.total = :total")
+    , @NamedQuery(name = "Order.findByShipping", query = "SELECT o FROM Order o WHERE o.shipping = :shipping")
+    , @NamedQuery(name = "Order.findByOrderdate", query = "SELECT o FROM Order o WHERE o.orderdate = :orderdate")
+    , @NamedQuery(name = "Order.findByCoupondiscount", query = "SELECT o FROM Order o WHERE o.coupondiscount = :coupondiscount")})
+public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,23 +72,30 @@ public class Orders implements Serializable {
     @Lob
     @Column(name = "invoice")
     private byte[] invoice;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordersOrderid")
-    private Collection<Orderitems> orderitemsCollection;
+    
+    
+    @OneToMany(targetEntity=Orderitems.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
+    private List<Orderitems> orderitems;
+    
+    
+    
+    @ManyToOne(targetEntity=Coupon.class,fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "coupons_coupid", referencedColumnName = "coupid")
-    @ManyToOne(optional = false)
-    private Coupons couponsCoupid;
+    private Coupon coupon;
+    
+    
+    @ManyToOne(targetEntity=Customer.class,fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "customers_custid", referencedColumnName = "custid")
-    @ManyToOne(optional = false)
-    private Customer customersCustid;
+    private Customer customer;
 
-    public Orders() {
+    public Order() {
     }
 
-    public Orders(Integer orderid) {
+    public Order(Integer orderid) {
         this.orderid = orderid;
     }
 
-    public Orders(Integer orderid, String orderno) {
+    public Order(Integer orderid, String orderno) {
         this.orderid = orderid;
         this.orderno = orderno;
     }
@@ -155,29 +164,28 @@ public class Orders implements Serializable {
         this.invoice = invoice;
     }
 
-    @XmlTransient
-    public Collection<Orderitems> getOrderitemsCollection() {
-        return orderitemsCollection;
+    public List<Orderitems> getOrderitems() {
+        return orderitems;
     }
 
-    public void setOrderitemsCollection(Collection<Orderitems> orderitemsCollection) {
-        this.orderitemsCollection = orderitemsCollection;
+    public void setOrderitems(List<Orderitems> orderitems) {
+        this.orderitems = orderitems;
     }
 
-    public Coupons getCouponsCoupid() {
-        return couponsCoupid;
+    public Coupon getCoupon() {
+        return coupon;
     }
 
-    public void setCouponsCoupid(Coupons couponsCoupid) {
-        this.couponsCoupid = couponsCoupid;
+    public void setCoupon(Coupon coupon) {
+        this.coupon = coupon;
     }
 
-    public Customer getCustomersCustid() {
-        return customersCustid;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomersCustid(Customer customersCustid) {
-        this.customersCustid = customersCustid;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
-    
+
 }

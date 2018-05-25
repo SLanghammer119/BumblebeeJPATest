@@ -49,11 +49,11 @@ public class Subcategory implements Serializable {
     
     
     @ManyToOne(targetEntity=Primecategory.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "primecategory_primeid", referencedColumnName = "primeid")
+    @JoinColumn(name = "primecategories_primeid", referencedColumnName = "primeid")
     private Primecategory primecategory;
     
     
-    @OneToMany(targetEntity=Subcategory.class, mappedBy="subcategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity=Article.class, mappedBy="subcategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Article> articles;
 
     public Subcategory() {

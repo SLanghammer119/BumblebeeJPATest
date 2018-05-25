@@ -7,8 +7,10 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,12 +39,14 @@ public class Articlecolors implements Serializable {
     @Basic(optional = false)
     @Column(name = "artcolid")
     private Integer artcolid;
+    
+    @ManyToOne(targetEntity=Article.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
-    @ManyToOne(optional = false)
-    private Article articlesArtid;
+    private Article article;
+    
+    @ManyToOne(targetEntity=Color.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "colors_colid", referencedColumnName = "colid")
-    @ManyToOne(optional = false)
-    private Colors colorsColid;
+    private Color color;
 
     public Articlecolors() {
     }
@@ -59,20 +63,24 @@ public class Articlecolors implements Serializable {
         this.artcolid = artcolid;
     }
 
-    public Article getArticlesArtid() {
-        return articlesArtid;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticlesArtid(Article articlesArtid) {
-        this.articlesArtid = articlesArtid;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
-    public Colors getColorsColid() {
-        return colorsColid;
+    
+
+    public Color getColor() {
+        return color;
     }
 
-    public void setColorsColid(Colors colorsColid) {
-        this.colorsColid = colorsColid;
+    public void setColor(Color color) {
+        this.color = color;
     }
+
+  
 
 }

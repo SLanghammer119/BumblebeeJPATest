@@ -8,8 +8,10 @@ package com.bumblebee.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "orderitems")
@@ -45,12 +47,15 @@ public class Orderitems implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "totalline")
     private BigDecimal totalline;
+    
+    @ManyToOne(targetEntity=Article.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
-    @ManyToOne(optional = false)
-    private Article articlesArtid;
+    private Article article;
+    
+    
+    @ManyToOne(targetEntity=Order.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "orders_orderid", referencedColumnName = "orderid")
-    @ManyToOne(optional = false)
-    private Orders ordersOrderid;
+    private Order order;
 
     public Orderitems() {
     }
@@ -83,20 +88,21 @@ public class Orderitems implements Serializable {
         this.totalline = totalline;
     }
 
-    public Article getArticlesArtid() {
-        return articlesArtid;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticlesArtid(Article articlesArtid) {
-        this.articlesArtid = articlesArtid;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
-    public Orders getOrdersOrderid() {
-        return ordersOrderid;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrdersOrderid(Orders ordersOrderid) {
-        this.ordersOrderid = ordersOrderid;
+    public void setOrder(Order order) {
+        this.order = order;
     }
-    
+
+ 
 }

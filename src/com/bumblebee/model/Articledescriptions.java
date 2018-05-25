@@ -7,8 +7,10 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "articledescriptions")
@@ -37,12 +39,14 @@ public class Articledescriptions implements Serializable {
     @Basic(optional = false)
     @Column(name = "artdesid")
     private Integer artdesid;
+    
+    @ManyToOne(targetEntity=Article.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
-    @ManyToOne(optional = false)
-    private Article articlesArtid;
+    private Article article;
+    
+    @ManyToOne(targetEntity=Description.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "descriptions_desid", referencedColumnName = "desid")
-    @ManyToOne(optional = false)
-    private Descriptions descriptionsDesid;
+    private Description description;
 
     public Articledescriptions() {
     }
@@ -59,20 +63,20 @@ public class Articledescriptions implements Serializable {
         this.artdesid = artdesid;
     }
 
-    public Article getArticlesArtid() {
-        return articlesArtid;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticlesArtid(Article articlesArtid) {
-        this.articlesArtid = articlesArtid;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
-    public Descriptions getDescriptionsDesid() {
-        return descriptionsDesid;
+    public Description getDescription() {
+        return description;
     }
 
-    public void setDescriptionsDesid(Descriptions descriptionsDesid) {
-        this.descriptionsDesid = descriptionsDesid;
+    public void setDescription(Description description) {
+        this.description = description;
     }
-    
+
 }

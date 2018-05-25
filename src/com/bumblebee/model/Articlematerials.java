@@ -7,8 +7,10 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "articlematerials")
@@ -37,12 +39,14 @@ public class Articlematerials implements Serializable {
     @Basic(optional = false)
     @Column(name = "artmatid")
     private Integer artmatid;
+    
+    @ManyToOne(targetEntity=Article.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
-    @ManyToOne(optional = false)
-    private Article articlesArtid;
+    private Article article;
+    
+    @ManyToOne(targetEntity=Material.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "materials_matid", referencedColumnName = "matid")
-    @ManyToOne(optional = false)
-    private Materials materialsMatid;
+    private Material material;
 
     public Articlematerials() {
     }
@@ -59,20 +63,22 @@ public class Articlematerials implements Serializable {
         this.artmatid = artmatid;
     }
 
-    public Article getArticlesArtid() {
-        return articlesArtid;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticlesArtid(Article articlesArtid) {
-        this.articlesArtid = articlesArtid;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
-    public Materials getMaterialsMatid() {
-        return materialsMatid;
+    public Material getMaterial() {
+        return material;
     }
 
-    public void setMaterialsMatid(Materials materialsMatid) {
-        this.materialsMatid = materialsMatid;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
+
+
     
 }

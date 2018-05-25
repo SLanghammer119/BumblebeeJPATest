@@ -7,10 +7,12 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,11 +22,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "care")
@@ -48,8 +49,10 @@ public class Care implements Serializable {
     @Lob
     @Column(name = "carephoto")
     private byte[] carephoto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "careCareid")
-    private Collection<Article> articlesCollection;
+    
+    
+    @OneToMany(targetEntity=Article.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "care")
+    private List<Article> articles;
 
     public Care() {
     }
@@ -88,13 +91,14 @@ public class Care implements Serializable {
         this.carephoto = carephoto;
     }
 
-    @XmlTransient
-    public Collection<Article> getArticlesCollection() {
-        return articlesCollection;
+    public List<Article> getArticles() {
+        return articles;
     }
 
-    public void setArticlesCollection(Collection<Article> articlesCollection) {
-        this.articlesCollection = articlesCollection;
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
     }
+
+ 
 
 }
